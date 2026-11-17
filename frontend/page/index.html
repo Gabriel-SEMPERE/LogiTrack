@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LogiTrack — Shipments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@700&display=swap">
+  <link rel="stylesheet" href="../style/variables.css">
+  <link rel="stylesheet" href="../style/reset.css">
+  <link rel="stylesheet" href="../style/main.css">
+  <link rel="stylesheet" href="../style/components.css">
+</head>
+<body>
+  <header class="header">
+    <a class="header__brand" href="./index.html">LogiTrack</a>
+    <button class="btn btn--primary" type="button">New shipment</button>
+  </header>
+
+  <div class="layout">
+    <aside class="filters" aria-label="Filters">
+      <label class="field">
+        <span class="field__label">Status</span>
+        <select id="status-filter" name="status">
+          <option value="">All statuses</option>
+          <option value="IN_TRANSIT">In transit</option>
+          <option value="DELIVERED">Delivered</option>
+          <option value="DELAYED">Delayed</option>
+          <option value="PENDING">Pending</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="field__label">Carrier</span>
+        <select id="carrier-filter" name="carrier">
+          <option value="">All carriers</option>
+          <option value="DHL">DHL</option>
+          <option value="Chronopost">Chronopost</option>
+          <option value="FedEx">FedEx</option>
+          <option value="UPS">UPS</option>
+        </select>
+      </label>
+    </aside>
+
+    <main class="content">
+      <div class="toolbar">
+        <h1>Shipments <span class="toolbar__count" id="shipment-count">4</span></h1>
+
+        <label class="field toolbar__search">
+          <span class="visually-hidden">Search by tracking number or recipient</span>
+          <input id="search" type="search" name="search" placeholder="Search tracking no. or recipient">
+        </label>
+
+        <label class="field">
+          <span class="visually-hidden">Sort by</span>
+          <select id="sort" name="sort">
+            <option value="date-asc">Estimated date ↑</option>
+            <option value="date-desc">Estimated date ↓</option>
+            <option value="priority">Priority first</option>
+          </select>
+        </label>
+      </div>
+
+      <section id="shipment-list" class="shipment-list" aria-live="polite">
+        <article class="card">
+          <div class="card__row">
+            <span class="card__tracking">TRK-2639-FR</span>
+            <span class="badge" data-status="DELIVERED">Delivered</span>
+          </div>
+          <p class="card__recipient">Claire Marchand</p>
+          <p class="card__meta">Nice · DHL</p>
+          <div class="card__row">
+            <p class="card__meta">ETA Nov 15, 2026</p>
+            <button class="btn" type="button">Details</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__row">
+            <span class="card__tracking">TRK-1543-FR</span>
+            <span class="badge" data-status="IN_TRANSIT">In transit</span>
+          </div>
+          <p class="card__recipient">Julien Moreau <span class="tag">Priority</span></p>
+          <p class="card__meta">Lyon · DHL</p>
+          <div class="card__row">
+            <p class="card__meta">ETA Nov 19, 2026</p>
+            <button class="btn" type="button">Details</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__row">
+            <span class="card__tracking">TRK-1817-FR</span>
+            <span class="badge" data-status="PENDING">Pending</span>
+          </div>
+          <p class="card__recipient">Thomas Bernard</p>
+          <p class="card__meta">Nantes · FedEx</p>
+          <div class="card__row">
+            <p class="card__meta">ETA Nov 20, 2026</p>
+            <button class="btn" type="button">Details</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__row">
+            <span class="card__tracking">TRK-1680-FR</span>
+            <span class="badge" data-status="DELAYED">Delayed</span>
+          </div>
+          <p class="card__recipient">Amina Mansouri <span class="tag">Priority</span></p>
+          <p class="card__meta">Marseille · Chronopost</p>
+          <div class="card__row">
+            <p class="card__meta">ETA Nov 22, 2026</p>
+            <button class="btn" type="button">Details</button>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
