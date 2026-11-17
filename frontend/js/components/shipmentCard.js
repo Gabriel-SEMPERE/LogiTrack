@@ -1,23 +1,10 @@
-const STATUS_LABELS = {
-  IN_TRANSIT: 'In transit',
-  DELIVERED: 'Delivered',
-  DELAYED: 'Delayed',
-  PENDING: 'Pending',
-};
+import { STATUS_LABELS, formatDate } from '../utils/format.js';
 
 function createElement(tag, className, text) {
   const element = document.createElement(tag);
   element.className = className;
   if (text) element.textContent = text;
   return element;
-}
-
-function formatDate(isoDate) {
-  return new Date(isoDate).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
 }
 
 export function createShipmentCard(shipment) {

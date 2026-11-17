@@ -48,10 +48,6 @@ select {
   border-radius: var(--radius);
 }
 
-.card--selected {
-  outline: 2px solid var(--color-in-transit);
-}
-
 .card__row {
   display: flex;
   justify-content: space-between;
@@ -108,4 +104,44 @@ select {
   border-radius: 999px;
   font-size: 0.6875rem;
   text-transform: uppercase;
+}
+
+.modal {
+  width: min(100% - 2rem, 480px);
+  margin: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.modal::backdrop {
+  background: rgb(0 0 0 / 0.4);
+}
+
+.modal__body {
+  display: grid;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__header h2 {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+.modal__details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-sm) var(--space-md);
+}
+
+.modal__details dt {
+  font-weight: 600;
 }

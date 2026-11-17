@@ -1,5 +1,6 @@
 import { getShipments } from './api/shipmentsApi.js';
 import { createShipmentCard } from './components/shipmentCard.js';
+import { openShipmentModal } from './components/shipmentModal.js';
 import { debounce } from './utils/debounce.js';
 
 const list = document.querySelector('#shipment-list');
@@ -76,11 +77,6 @@ function updateList() {
   renderShipments(shipments.filter(matchesFilters).sort(compareShipments));
 }
 
-function selectCard(card) {
-  list.querySelector('.card--selected')?.classList.remove('card--selected');
-  card.classList.add('card--selected');
-}
-
 async function loadShipments() {
   renderLoading();
   try {
@@ -101,7 +97,8 @@ list.addEventListener('click', (event) => {
   const button = event.target.closest('[data-action="details"]');
   if (!button) return;
 
-  selectCard(button.closest('.card'));
+  const { id } = button.closest('.card').dataset;
+  openShipmentModal(shipments.find((shipment) => String(shipment.id) === id));
 });
 
 loadShipments();

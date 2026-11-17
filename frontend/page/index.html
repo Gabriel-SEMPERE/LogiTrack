@@ -66,5 +66,15 @@
       <section id="shipment-list" class="shipment-list" aria-live="polite"></section>
     </main>
   </div>
+
+  <dialog id="shipment-modal" class="modal" aria-labelledby="modal-title">
+    <div class="modal__body">
+      <div class="modal__header">
+        <h2 id="modal-title"></h2>
+        <button class="btn" type="button" data-action="close" aria-label="Close">✕</button>
+      </div>
+      <dl id="modal-details" class="modal__details"></dl>
+    </div>
+  </dialog>
 </body>
 </html>
