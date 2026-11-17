@@ -1,14 +1,27 @@
 import { getShipments } from './api/shipmentsApi.js';
 import { createShipmentCard } from './components/shipmentCard.js';
+import { debounce } from './utils/debounce.js';
 
 const list = document.querySelector('#shipment-list');
 const count = document.querySelector('#shipment-count');
+const search = document.querySelector('#search');
 
-function renderShipments(shipments) {
+let shipments = [];
+
+function renderShipments(items) {
+  count.textContent = items.length;
+
+  if (items.length === 0) {
+    const message = document.createElement('p');
+    message.className = 'state';
+    message.textContent = 'No shipments match your search.';
+    list.replaceChildren(message);
+    return;
+  }
+
   const fragment = document.createDocumentFragment();
-  shipments.forEach((shipment) => fragment.append(createShipmentCard(shipment)));
+  items.forEach((shipment) => fragment.append(createShipmentCard(shipment)));
   list.replaceChildren(fragment);
-  count.textContent = shipments.length;
 }
 
 function renderLoading() {
@@ -37,15 +50,28 @@ function renderError() {
   list.replaceChildren(box);
 }
 
+function applySearch() {
+  const query = search.value.trim().toLowerCase();
+
+  const results = shipments.filter((shipment) =>
+    shipment.trackingNumber.toLowerCase().includes(query) ||
+    shipment.recipient.toLowerCase().includes(query)
+  );
+
+  renderShipments(results);
+}
+
 async function loadShipments() {
   renderLoading();
   try {
-    const shipments = await getShipments();
-    renderShipments(shipments);
+    shipments = await getShipments();
+    applySearch();
   } catch (error) {
     console.error(error);
     renderError();
   }
 }
+
+search.addEventListener('input', debounce(applySearch, 300));
 
 loadShipments();
