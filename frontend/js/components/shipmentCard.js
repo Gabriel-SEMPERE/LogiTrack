@@ -39,6 +39,7 @@ export function createShipmentCard(shipment) {
   const footer = createElement('div', 'card__row');
   const details = createElement('button', 'btn', 'Details');
   details.type = 'button';
+  details.dataset.action = 'details';
   footer.append(createElement('p', 'card__meta', `ETA ${formatDate(shipment.estimatedDelivery)}`), details);
 
   card.append(header, recipient, meta, footer);

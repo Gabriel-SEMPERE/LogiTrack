@@ -48,6 +48,10 @@ select {
   border-radius: var(--radius);
 }
 
+.card--selected {
+  outline: 2px solid var(--color-in-transit);
+}
+
 .card__row {
   display: flex;
   justify-content: space-between;
