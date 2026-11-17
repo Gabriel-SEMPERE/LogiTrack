@@ -46,11 +46,11 @@
 
     <main class="content">
       <div class="toolbar">
-        <h1>Shipments <span class="toolbar__count" id="shipment-count">4</span></h1>
+        <h1>Shipments <span class="toolbar__count" id="shipment-count"></span></h1>
 
         <label class="field toolbar__search">
           <span class="visually-hidden">Search by tracking number or recipient</span>
-          <input id="search" type="search" name="search" placeholder="Search tracking no. or recipient">
+          <input id="search" type="search" name="search" placeholder="Search">
         </label>
 
         <label class="field">
@@ -63,59 +63,7 @@
         </label>
       </div>
 
-      <section id="shipment-list" class="shipment-list" aria-live="polite">
-        <article class="card">
-          <div class="card__row">
-            <span class="card__tracking">TRK-2639-FR</span>
-            <span class="badge" data-status="DELIVERED">Delivered</span>
-          </div>
-          <p class="card__recipient">Claire Marchand</p>
-          <p class="card__meta">Nice · DHL</p>
-          <div class="card__row">
-            <p class="card__meta">ETA Nov 15, 2026</p>
-            <button class="btn" type="button">Details</button>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__row">
-            <span class="card__tracking">TRK-1543-FR</span>
-            <span class="badge" data-status="IN_TRANSIT">In transit</span>
-          </div>
-          <p class="card__recipient">Julien Moreau <span class="tag">Priority</span></p>
-          <p class="card__meta">Lyon · DHL</p>
-          <div class="card__row">
-            <p class="card__meta">ETA Nov 19, 2026</p>
-            <button class="btn" type="button">Details</button>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__row">
-            <span class="card__tracking">TRK-1817-FR</span>
-            <span class="badge" data-status="PENDING">Pending</span>
-          </div>
-          <p class="card__recipient">Thomas Bernard</p>
-          <p class="card__meta">Nantes · FedEx</p>
-          <div class="card__row">
-            <p class="card__meta">ETA Nov 20, 2026</p>
-            <button class="btn" type="button">Details</button>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__row">
-            <span class="card__tracking">TRK-1680-FR</span>
-            <span class="badge" data-status="DELAYED">Delayed</span>
-          </div>
-          <p class="card__recipient">Amina Mansouri <span class="tag">Priority</span></p>
-          <p class="card__meta">Marseille · Chronopost</p>
-          <div class="card__row">
-            <p class="card__meta">ETA Nov 22, 2026</p>
-            <button class="btn" type="button">Details</button>
-          </div>
-        </article>
-      </section>
+      <section id="shipment-list" class="shipment-list" aria-live="polite"></section>
     </main>
   </div>
 </body>

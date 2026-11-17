@@ -83,6 +83,20 @@ select {
 [data-status="DELAYED"] { --status: var(--color-delayed); }
 [data-status="PENDING"] { --status: var(--color-pending); }
 
+.state {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.state--error {
+  color: color-mix(in srgb, var(--color-delayed), black 20%);
+}
+
 .tag {
   margin-left: var(--space-sm);
   padding: 0 0.375rem;
