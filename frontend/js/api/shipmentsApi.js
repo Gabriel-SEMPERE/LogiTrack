@@ -10,3 +10,18 @@ export async function getShipments() {
   const json = await response.json();
   return json.data;
 }
+
+export async function updateShipment(id, changes) {
+  const response = await fetch(`${API_URL}/shipments/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(changes),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error ${response.status}`);
+  }
+
+  const json = await response.json();
+  return json.data;
+}

@@ -22,7 +22,8 @@
 }
 
 input,
-select {
+select,
+textarea {
   width: 100%;
   min-height: 40px;
   padding: var(--space-sm);
@@ -46,10 +47,6 @@ select {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-}
-
-.card--selected {
-  outline: 2px solid var(--color-in-transit);
 }
 
 .card__row {
@@ -108,4 +105,75 @@ select {
   border-radius: 999px;
   font-size: 0.6875rem;
   text-transform: uppercase;
+}
+
+.modal {
+  width: min(100% - 2rem, 480px);
+  margin: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.modal::backdrop {
+  background: rgb(0 0 0 / 0.4);
+}
+
+.modal__body {
+  display: grid;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__header h2 {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+.modal__details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-sm) var(--space-md);
+}
+
+.modal__details dt {
+  font-weight: 600;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+}
+
+.checkbox input {
+  width: auto;
+  min-height: auto;
+}
+
+.modal__form {
+  display: grid;
+  gap: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.modal__form .btn {
+  justify-self: end;
+}
+
+.modal__error {
+  color: color-mix(in srgb, var(--color-delayed), black 20%);
 }

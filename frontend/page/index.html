@@ -66,5 +66,41 @@
       <section id="shipment-list" class="shipment-list" aria-live="polite"></section>
     </main>
   </div>
+
+  <dialog id="shipment-modal" class="modal" aria-labelledby="modal-title">
+    <div class="modal__body">
+      <div class="modal__header">
+        <h2 id="modal-title"></h2>
+        <button class="btn" type="button" data-action="close" aria-label="Close">✕</button>
+      </div>
+      <dl id="modal-details" class="modal__details"></dl>
+
+      <form id="modal-form" class="modal__form">
+        <label class="field">
+          <span class="field__label">Status</span>
+          <select name="status">
+            <option value="IN_TRANSIT">In transit</option>
+            <option value="DELIVERED">Delivered</option>
+            <option value="DELAYED">Delayed</option>
+            <option value="PENDING">Pending</option>
+          </select>
+        </label>
+
+        <label class="checkbox">
+          <input type="checkbox" name="isPriority">
+          Priority shipment
+        </label>
+
+        <label class="field">
+          <span class="field__label">Internal notes</span>
+          <textarea name="internalNotes" rows="3"></textarea>
+        </label>
+
+        <p class="modal__error" role="alert" hidden>Couldn’t save changes. Try again.</p>
+
+        <button class="btn btn--primary" type="submit">Save</button>
+      </form>
+    </div>
+  </dialog>
 </body>
 </html>
