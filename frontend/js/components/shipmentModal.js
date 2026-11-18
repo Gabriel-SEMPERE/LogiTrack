@@ -1,9 +1,15 @@
+import { updateShipment } from '../api/shipmentsApi.js';
 import { STATUS_LABELS, formatDate } from '../utils/format.js';
 
 const modal = document.querySelector('#shipment-modal');
 const title = modal.querySelector('#modal-title');
 const details = modal.querySelector('#modal-details');
 const form = modal.querySelector('#modal-form');
+const error = form.querySelector('.modal__error');
+const saveButton = form.querySelector('[type="submit"]');
+
+let currentShipment;
+let onSaved;
 
 function createDetail(label, value) {
   const term = document.createElement('dt');
@@ -21,7 +27,10 @@ function createBadge(status) {
   return badge;
 }
 
-export function openShipmentModal(shipment) {
+export function openShipmentModal(shipment, handleSaved) {
+  currentShipment = shipment;
+  onSaved = handleSaved;
+  error.hidden = true;
   title.textContent = shipment.trackingNumber;
 
   details.replaceChildren(
@@ -43,5 +52,28 @@ export function openShipmentModal(shipment) {
 modal.addEventListener('click', (event) => {
   if (event.target === modal || event.target.closest('[data-action="close"]')) {
     modal.close();
+  }
+});
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  error.hidden = true;
+  saveButton.disabled = true;
+  saveButton.textContent = 'Saving…';
+
+  try {
+    const updated = await updateShipment(currentShipment.id, {
+      status: form.elements.status.value,
+      isPriority: form.elements.isPriority.checked,
+      internalNotes: form.elements.internalNotes.value,
+    });
+    onSaved(updated);
+    modal.close();
+  } catch (saveError) {
+    console.error(saveError);
+    error.hidden = false;
+  } finally {
+    saveButton.disabled = false;
+    saveButton.textContent = 'Save';
   }
 });

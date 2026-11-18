@@ -173,3 +173,7 @@ textarea {
 .modal__form .btn {
   justify-self: end;
 }
+
+.modal__error {
+  color: color-mix(in srgb, var(--color-delayed), black 20%);
+}

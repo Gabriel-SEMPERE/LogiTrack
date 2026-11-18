@@ -77,6 +77,11 @@ function updateList() {
   renderShipments(shipments.filter(matchesFilters).sort(compareShipments));
 }
 
+function replaceShipment(updated) {
+  shipments = shipments.map((shipment) => (shipment.id === updated.id ? updated : shipment));
+  updateList();
+}
+
 async function loadShipments() {
   renderLoading();
   try {
@@ -98,7 +103,7 @@ list.addEventListener('click', (event) => {
   if (!button) return;
 
   const { id } = button.closest('.card').dataset;
-  openShipmentModal(shipments.find((shipment) => String(shipment.id) === id));
+  openShipmentModal(shipments.find((shipment) => String(shipment.id) === id), replaceShipment);
 });
 
 loadShipments();

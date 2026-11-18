@@ -75,7 +75,7 @@
       </div>
       <dl id="modal-details" class="modal__details"></dl>
 
-      <form id="modal-form" class="modal__form" method="dialog">
+      <form id="modal-form" class="modal__form">
         <label class="field">
           <span class="field__label">Status</span>
           <select name="status">
@@ -95,6 +95,8 @@
           <span class="field__label">Internal notes</span>
           <textarea name="internalNotes" rows="3"></textarea>
         </label>
+
+        <p class="modal__error" role="alert" hidden>Couldn’t save changes. Try again.</p>
 
         <button class="btn btn--primary" type="submit">Save</button>
       </form>
