@@ -48,19 +48,13 @@
       <div class="toolbar">
         <h1>Shipments <span class="toolbar__count" id="shipment-count"></span></h1>
 
-        <label class="field toolbar__search">
-          <span class="visually-hidden">Search by tracking number or recipient</span>
-          <input id="search" type="search" name="search" placeholder="Search">
-        </label>
+        <input id="search" class="toolbar__search" type="search" placeholder="Search" aria-label="Search by tracking number or recipient">
 
-        <label class="field">
-          <span class="visually-hidden">Sort by</span>
-          <select id="sort" name="sort">
-            <option value="date-asc">Estimated date ↑</option>
-            <option value="date-desc">Estimated date ↓</option>
-            <option value="priority">Priority first</option>
-          </select>
-        </label>
+        <select id="sort" class="toolbar__sort" aria-label="Sort by">
+          <option value="date-asc">Estimated date ↑</option>
+          <option value="date-desc">Estimated date ↓</option>
+          <option value="priority">Priority first</option>
+        </select>
       </div>
 
       <section id="shipment-list" class="shipment-list" aria-live="polite"></section>
@@ -69,8 +63,8 @@
 
   <dialog id="shipment-modal" class="modal" aria-labelledby="modal-title">
     <div class="modal__body">
-      <div class="modal__header">
-        <h2 id="modal-title"></h2>
+      <div class="row">
+        <h2 id="modal-title" class="modal__title"></h2>
         <button class="btn" type="button" data-action="close" aria-label="Close">✕</button>
       </div>
       <dl id="modal-details" class="modal__details"></dl>
@@ -96,7 +90,7 @@
           <textarea name="internalNotes" rows="3"></textarea>
         </label>
 
-        <p class="modal__error" role="alert" hidden>Couldn’t save changes. Try again.</p>
+        <p class="error" role="alert" hidden>Couldn't save changes. Try again.</p>
 
         <button class="btn btn--primary" type="submit">Save</button>
       </form>
