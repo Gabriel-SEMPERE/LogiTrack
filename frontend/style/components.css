@@ -30,6 +30,19 @@ textarea {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   background: var(--color-surface);
+  resize: vertical;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+}
+
+.checkbox input {
+  width: auto;
+  min-height: auto;
 }
 
 .visually-hidden {
@@ -38,6 +51,17 @@ textarea {
   height: 1px;
   overflow: hidden;
   clip: rect(0 0 0 0);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.error {
+  color: color-mix(in srgb, var(--color-delayed), black 20%);
 }
 
 .card {
@@ -49,16 +73,8 @@ textarea {
   border-radius: var(--radius);
 }
 
-.card__row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
 .card__tracking {
   font-family: var(--font-mono);
-  font-size: 0.875rem;
 }
 
 .card__recipient {
@@ -84,6 +100,15 @@ textarea {
 [data-status="DELAYED"] { --status: var(--color-delayed); }
 [data-status="PENDING"] { --status: var(--color-pending); }
 
+.tag {
+  margin-left: var(--space-sm);
+  padding: 0 0.375rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+}
+
 .state {
   grid-column: 1 / -1;
   display: grid;
@@ -92,19 +117,6 @@ textarea {
   padding: var(--space-lg);
   text-align: center;
   color: var(--color-text-muted);
-}
-
-.state--error {
-  color: color-mix(in srgb, var(--color-delayed), black 20%);
-}
-
-.tag {
-  margin-left: var(--space-sm);
-  padding: 0 0.375rem;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  font-size: 0.6875rem;
-  text-transform: uppercase;
 }
 
 .modal {
@@ -126,13 +138,7 @@ textarea {
   padding: var(--space-lg);
 }
 
-.modal__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal__header h2 {
+.modal__title {
   font-family: var(--font-mono);
   font-size: 1rem;
 }
@@ -147,22 +153,6 @@ textarea {
   font-weight: 600;
 }
 
-textarea {
-  resize: vertical;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-weight: 600;
-}
-
-.checkbox input {
-  width: auto;
-  min-height: auto;
-}
-
 .modal__form {
   display: grid;
   gap: var(--space-md);
@@ -172,8 +162,4 @@ textarea {
 
 .modal__form .btn {
   justify-self: end;
-}
-
-.modal__error {
-  color: color-mix(in srgb, var(--color-delayed), black 20%);
 }

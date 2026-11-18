@@ -1,79 +1,89 @@
 import { updateShipment } from '../api/shipmentsApi.js';
-import { STATUS_LABELS, formatDate } from '../utils/format.js';
+import { createElement, createStatusBadge } from '../utils/dom.js';
+import { formatDate } from '../utils/format.js';
 
 const modal = document.querySelector('#shipment-modal');
-const title = modal.querySelector('#modal-title');
-const details = modal.querySelector('#modal-details');
-const form = modal.querySelector('#modal-form');
-const error = form.querySelector('.modal__error');
+const title = document.querySelector('#modal-title');
+const details = document.querySelector('#modal-details');
+const form = document.querySelector('#modal-form');
+const errorMessage = form.querySelector('.error');
 const saveButton = form.querySelector('[type="submit"]');
 
-let currentShipment;
-let onSaved;
+let openedShipment = null;
+let onSaved = null;
 
-function createDetail(label, value) {
-  const term = document.createElement('dt');
-  term.textContent = label;
-  const description = document.createElement('dd');
+function addDetail(label, value) {
+  const description = createElement('dd');
   description.append(value);
-  return [term, description];
+  details.append(createElement('dt', '', label), description);
 }
 
-function createBadge(status) {
-  const badge = document.createElement('span');
-  badge.className = 'badge';
-  badge.dataset.status = status;
-  badge.textContent = STATUS_LABELS[status];
-  return badge;
+function fillDetails(shipment) {
+  details.replaceChildren();
+  addDetail('Status', createStatusBadge(shipment.status));
+  addDetail('Recipient', shipment.recipient);
+  addDetail('City', shipment.destinationCity);
+  addDetail('Carrier', shipment.carrier);
+  addDetail('Departure', formatDate(shipment.departureDate));
+  addDetail('Estimated delivery', formatDate(shipment.estimatedDelivery));
 }
 
-export function openShipmentModal(shipment, handleSaved) {
-  currentShipment = shipment;
-  onSaved = handleSaved;
-  error.hidden = true;
-  title.textContent = shipment.trackingNumber;
-
-  details.replaceChildren(
-    ...createDetail('Status', createBadge(shipment.status)),
-    ...createDetail('Recipient', shipment.recipient),
-    ...createDetail('City', shipment.destinationCity),
-    ...createDetail('Carrier', shipment.carrier),
-    ...createDetail('Departure', formatDate(shipment.departureDate)),
-    ...createDetail('Estimated delivery', formatDate(shipment.estimatedDelivery)),
-  );
-
+function fillForm(shipment) {
   form.elements.status.value = shipment.status;
   form.elements.isPriority.checked = shipment.isPriority;
   form.elements.internalNotes.value = shipment.internalNotes;
+}
+
+function readForm() {
+  return {
+    status: form.elements.status.value,
+    isPriority: form.elements.isPriority.checked,
+    internalNotes: form.elements.internalNotes.value,
+  };
+}
+
+function setSaving(isSaving) {
+  saveButton.disabled = isSaving;
+  saveButton.textContent = isSaving ? 'Saving…' : 'Save';
+}
+
+export function openShipmentModal(shipment, handleSaved) {
+  openedShipment = shipment;
+  onSaved = handleSaved;
+
+  title.textContent = shipment.trackingNumber;
+  fillDetails(shipment);
+  fillForm(shipment);
+  errorMessage.hidden = true;
 
   modal.showModal();
 }
 
-modal.addEventListener('click', (event) => {
-  if (event.target === modal || event.target.closest('[data-action="close"]')) {
+function handleModalClick(event) {
+  const clickedBackdrop = event.target === modal;
+  const clickedClose = event.target.closest('[data-action="close"]');
+
+  if (clickedBackdrop || clickedClose) {
     modal.close();
   }
-});
+}
 
-form.addEventListener('submit', async (event) => {
+async function handleSubmit(event) {
   event.preventDefault();
-  error.hidden = true;
-  saveButton.disabled = true;
-  saveButton.textContent = 'Saving…';
+  errorMessage.hidden = true;
+  setSaving(true);
 
   try {
-    const updated = await updateShipment(currentShipment.id, {
-      status: form.elements.status.value,
-      isPriority: form.elements.isPriority.checked,
-      internalNotes: form.elements.internalNotes.value,
-    });
-    onSaved(updated);
+    const updatedShipment = await updateShipment(openedShipment.id, readForm());
+    onSaved(updatedShipment);
     modal.close();
-  } catch (saveError) {
-    console.error(saveError);
-    error.hidden = false;
-  } finally {
-    saveButton.disabled = false;
-    saveButton.textContent = 'Save';
+  } catch (error) {
+    console.error(error);
+    errorMessage.hidden = false;
   }
-});
+
+  setSaving(false);
+}
+
+modal.addEventListener('click', handleModalClick);
+form.addEventListener('submit', handleSubmit);

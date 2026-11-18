@@ -1,109 +1,90 @@
 import { getShipments } from './api/shipmentsApi.js';
 import { createShipmentCard } from './components/shipmentCard.js';
 import { openShipmentModal } from './components/shipmentModal.js';
+import { setShipments, findShipment, replaceShipment, getVisibleShipments } from './state/store.js';
 import { debounce } from './utils/debounce.js';
+import { createElement } from './utils/dom.js';
 
 const list = document.querySelector('#shipment-list');
 const count = document.querySelector('#shipment-count');
-const search = document.querySelector('#search');
-const statusFilter = document.querySelector('#status-filter');
-const carrierFilter = document.querySelector('#carrier-filter');
-const sort = document.querySelector('#sort');
+const searchInput = document.querySelector('#search');
+const statusSelect = document.querySelector('#status-filter');
+const carrierSelect = document.querySelector('#carrier-filter');
+const sortSelect = document.querySelector('#sort');
 
-let shipments = [];
-
-function renderShipments(items) {
-  count.textContent = items.length;
-
-  if (items.length === 0) {
-    const message = document.createElement('p');
-    message.className = 'state';
-    message.textContent = 'No shipments match your filters.';
-    list.replaceChildren(message);
-    return;
-  }
-
-  const fragment = document.createDocumentFragment();
-  items.forEach((shipment) => fragment.append(createShipmentCard(shipment)));
-  list.replaceChildren(fragment);
+function getFilters() {
+  return {
+    search: searchInput.value.trim(),
+    status: statusSelect.value,
+    carrier: carrierSelect.value,
+    sort: sortSelect.value,
+  };
 }
 
-function renderLoading() {
-  const message = document.createElement('p');
-  message.className = 'state';
-  message.textContent = 'Loading shipments…';
-  list.replaceChildren(message);
-  count.textContent = '';
+function showMessage(text) {
+  list.replaceChildren(createElement('p', 'state', text));
 }
 
-function renderError() {
-  const box = document.createElement('div');
-  box.className = 'state state--error';
+function showError() {
+  const box = createElement('div', 'state error');
   box.setAttribute('role', 'alert');
 
-  const message = document.createElement('p');
-  message.textContent = 'Couldn’t load shipments.';
+  const retryButton = createElement('button', 'btn', 'Retry');
+  retryButton.type = 'button';
+  retryButton.addEventListener('click', loadShipments);
 
-  const retry = document.createElement('button');
-  retry.className = 'btn';
-  retry.type = 'button';
-  retry.textContent = 'Retry';
-  retry.addEventListener('click', loadShipments);
-
-  box.append(message, retry);
+  box.append(createElement('p', '', "Couldn't load shipments."), retryButton);
   list.replaceChildren(box);
 }
 
-function matchesFilters(shipment) {
-  const query = search.value.trim().toLowerCase();
-  const matchesQuery =
-    shipment.trackingNumber.toLowerCase().includes(query) ||
-    shipment.recipient.toLowerCase().includes(query);
-  const matchesStatus = !statusFilter.value || shipment.status === statusFilter.value;
-  const matchesCarrier = !carrierFilter.value || shipment.carrier === carrierFilter.value;
+function renderList() {
+  const shipments = getVisibleShipments(getFilters());
+  count.textContent = shipments.length;
 
-  return matchesQuery && matchesStatus && matchesCarrier;
+  if (shipments.length === 0) {
+    showMessage('No shipments match your filters.');
+    return;
+  }
+
+  const cards = shipments.map((shipment) => createShipmentCard(shipment));
+  list.replaceChildren(...cards);
 }
 
-function compareShipments(a, b) {
-  const byDate = new Date(a.estimatedDelivery) - new Date(b.estimatedDelivery);
-
-  if (sort.value === 'date-desc') return -byDate;
-  if (sort.value === 'priority') return b.isPriority - a.isPriority || byDate;
-  return byDate;
+function handleShipmentSaved(updatedShipment) {
+  replaceShipment(updatedShipment);
+  renderList();
 }
 
-function updateList() {
-  renderShipments(shipments.filter(matchesFilters).sort(compareShipments));
-}
+function handleListClick(event) {
+  const detailsButton = event.target.closest('[data-action="details"]');
 
-function replaceShipment(updated) {
-  shipments = shipments.map((shipment) => (shipment.id === updated.id ? updated : shipment));
-  updateList();
+  if (!detailsButton) {
+    return;
+  }
+
+  const card = detailsButton.closest('.card');
+  const shipment = findShipment(card.dataset.id);
+  openShipmentModal(shipment, handleShipmentSaved);
 }
 
 async function loadShipments() {
-  renderLoading();
+  count.textContent = '';
+  showMessage('Loading shipments…');
+
   try {
-    shipments = await getShipments();
-    updateList();
+    const shipments = await getShipments();
+    setShipments(shipments);
+    renderList();
   } catch (error) {
     console.error(error);
-    renderError();
+    showError();
   }
 }
 
-search.addEventListener('input', debounce(updateList, 300));
-statusFilter.addEventListener('change', updateList);
-carrierFilter.addEventListener('change', updateList);
-sort.addEventListener('change', updateList);
-
-list.addEventListener('click', (event) => {
-  const button = event.target.closest('[data-action="details"]');
-  if (!button) return;
-
-  const { id } = button.closest('.card').dataset;
-  openShipmentModal(shipments.find((shipment) => String(shipment.id) === id), replaceShipment);
-});
+searchInput.addEventListener('input', debounce(renderList, 300));
+statusSelect.addEventListener('change', renderList);
+carrierSelect.addEventListener('change', renderList);
+sortSelect.addEventListener('change', renderList);
+list.addEventListener('click', handleListClick);
 
 loadShipments();

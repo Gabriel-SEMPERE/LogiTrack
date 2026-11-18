@@ -69,8 +69,8 @@
 
   <dialog id="shipment-modal" class="modal" aria-labelledby="modal-title">
     <div class="modal__body">
-      <div class="modal__header">
-        <h2 id="modal-title"></h2>
+      <div class="row">
+        <h2 id="modal-title" class="modal__title"></h2>
         <button class="btn" type="button" data-action="close" aria-label="Close">✕</button>
       </div>
       <dl id="modal-details" class="modal__details"></dl>
@@ -96,7 +96,7 @@
           <textarea name="internalNotes" rows="3"></textarea>
         </label>
 
-        <p class="modal__error" role="alert" hidden>Couldn’t save changes. Try again.</p>
+        <p class="error" role="alert" hidden>Couldn't save changes. Try again.</p>
 
         <button class="btn btn--primary" type="submit">Save</button>
       </form>
