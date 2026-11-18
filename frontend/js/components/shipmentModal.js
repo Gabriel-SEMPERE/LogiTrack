@@ -3,6 +3,7 @@ import { STATUS_LABELS, formatDate } from '../utils/format.js';
 const modal = document.querySelector('#shipment-modal');
 const title = modal.querySelector('#modal-title');
 const details = modal.querySelector('#modal-details');
+const form = modal.querySelector('#modal-form');
 
 function createDetail(label, value) {
   const term = document.createElement('dt');
@@ -30,9 +31,11 @@ export function openShipmentModal(shipment) {
     ...createDetail('Carrier', shipment.carrier),
     ...createDetail('Departure', formatDate(shipment.departureDate)),
     ...createDetail('Estimated delivery', formatDate(shipment.estimatedDelivery)),
-    ...createDetail('Priority', shipment.isPriority ? 'Yes' : 'No'),
-    ...createDetail('Internal notes', shipment.internalNotes || '—'),
   );
+
+  form.elements.status.value = shipment.status;
+  form.elements.isPriority.checked = shipment.isPriority;
+  form.elements.internalNotes.value = shipment.internalNotes;
 
   modal.showModal();
 }
