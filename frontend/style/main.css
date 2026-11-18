@@ -7,10 +7,6 @@ body {
   background: var(--color-bg);
 }
 
-h1 {
-  font-size: 1.5rem;
-}
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -38,6 +34,7 @@ h1 {
 
 .content {
   display: grid;
+  align-content: start;
   gap: var(--space-md);
   padding: var(--space-md);
 }
@@ -45,12 +42,12 @@ h1 {
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: var(--space-sm);
 }
 
 .toolbar h1 {
   flex-basis: 100%;
+  font-size: 1.5rem;
 }
 
 .toolbar__count {
@@ -63,16 +60,17 @@ h1 {
   flex: 1;
 }
 
+.toolbar__sort {
+  width: auto;
+}
+
 .shipment-list {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--space-md);
 }
 
 @media (min-width: 600px) {
-  .shipment-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .toolbar h1 {
     flex-basis: auto;
     margin-right: auto;
@@ -98,11 +96,6 @@ h1 {
   }
 
   .content {
-    align-content: start;
     padding: var(--space-lg);
-  }
-
-  .shipment-list {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 }

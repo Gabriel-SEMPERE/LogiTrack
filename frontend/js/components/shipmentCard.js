@@ -11,7 +11,7 @@ export function createShipmentCard(shipment) {
 
   const recipient = createElement('p', 'card__recipient', shipment.recipient);
   if (shipment.isPriority) {
-    recipient.append(createElement('span', 'tag', 'Priority'));
+    recipient.append(createElement('span', 'badge', 'Priority'));
   }
 
   const destination = createElement('p', 'card__meta', `${shipment.destinationCity} · ${shipment.carrier}`);
@@ -24,5 +24,6 @@ export function createShipmentCard(shipment) {
   bottomRow.append(eta, detailsButton);
 
   card.append(topRow, recipient, destination, bottomRow);
-  return card;
+*
+    return card;
 }

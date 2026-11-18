@@ -48,19 +48,13 @@
       <div class="toolbar">
         <h1>Shipments <span class="toolbar__count" id="shipment-count"></span></h1>
 
-        <label class="field toolbar__search">
-          <span class="visually-hidden">Search by tracking number or recipient</span>
-          <input id="search" type="search" name="search" placeholder="Search">
-        </label>
+        <input id="search" class="toolbar__search" type="search" placeholder="Search" aria-label="Search by tracking number or recipient">
 
-        <label class="field">
-          <span class="visually-hidden">Sort by</span>
-          <select id="sort" name="sort">
-            <option value="date-asc">Estimated date ↑</option>
-            <option value="date-desc">Estimated date ↓</option>
-            <option value="priority">Priority first</option>
-          </select>
-        </label>
+        <select id="sort" class="toolbar__sort" aria-label="Sort by">
+          <option value="date-asc">Estimated date ↑</option>
+          <option value="date-desc">Estimated date ↓</option>
+          <option value="priority">Priority first</option>
+        </select>
       </div>
 
       <section id="shipment-list" class="shipment-list" aria-live="polite"></section>
