@@ -4,6 +4,9 @@ import { openShipmentModal } from './components/shipmentModal.js';
 import { setShipments, findShipment, replaceShipment, getVisibleShipments } from './state/store.js';
 import { debounce } from './utils/debounce.js';
 import { createElement } from './utils/dom.js';
+import { saveItem, loadItem } from './utils/storage.js';
+
+const PREFERENCES_KEY = 'logitrack-preferences';
 
 const list = document.querySelector('#shipment-list');
 const count = document.querySelector('#shipment-count');
@@ -19,6 +22,31 @@ function getFilters() {
     carrier: carrierSelect.value,
     sort: sortSelect.value,
   };
+}
+
+function savePreferences() {
+  saveItem(PREFERENCES_KEY, {
+    status: statusSelect.value,
+    carrier: carrierSelect.value,
+    sort: sortSelect.value,
+  });
+}
+
+function restorePreferences() {
+  const preferences = loadItem(PREFERENCES_KEY);
+
+  if (!preferences) {
+    return;
+  }
+
+  statusSelect.value = preferences.status;
+  carrierSelect.value = preferences.carrier;
+  sortSelect.value = preferences.sort;
+}
+
+function handleFilterChange() {
+  savePreferences();
+  renderList();
 }
 
 function showMessage(text) {
@@ -82,9 +110,10 @@ async function loadShipments() {
 }
 
 searchInput.addEventListener('input', debounce(renderList, 300));
-statusSelect.addEventListener('change', renderList);
-carrierSelect.addEventListener('change', renderList);
-sortSelect.addEventListener('change', renderList);
+statusSelect.addEventListener('change', handleFilterChange);
+carrierSelect.addEventListener('change', handleFilterChange);
+sortSelect.addEventListener('change', handleFilterChange);
 list.addEventListener('click', handleListClick);
 
+restorePreferences();
 loadShipments();

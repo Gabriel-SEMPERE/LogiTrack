@@ -24,6 +24,5 @@ export function createShipmentCard(shipment) {
   bottomRow.append(eta, detailsButton);
 
   card.append(topRow, recipient, destination, bottomRow);
-*
-    return card;
+  return card;
 }
